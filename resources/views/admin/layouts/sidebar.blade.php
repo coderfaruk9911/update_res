@@ -157,20 +157,77 @@
               </li>
 
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{route('order_item.view')}}" class="nav-link">
                   <i class="fa fa-plus-circle nav-icon"></i>
-                  <p>Cash Counter</p>
+                  <p>Order List</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{route('order_details.view')}}" class="nav-link">
                   <i class="fa fa-eye nav-icon"></i>
-                  <p>Menu 3</p>
+                  <p>Order Details</p>
                 </a>
               </li>
+
+              
+
+
+
             </ul>
           </li>
+
+
+          {{-- <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-plus-square"></i>
+              <p>
+                Seller Section
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>
+                    Cash Counter
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="pages/examples/login.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Order List</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="pages/examples/register.html" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Menu 2</p>
+                    </a>
+                  </li>
+                  
+                </ul>
+                
+              <li class="nav-item">
+                <a href="{{route('menu_item.view')}}" class="nav-link">
+                  <i class="fa fa-plus-circle nav-icon"></i>
+                  <p>Menu Item List</p>
+                </a>
+              </li>
+
+              </li>
+              
+             
+              
+             
+             
+            </ul>
+          </li> --}}
+
+
           @endif
           <!-- End Seller Section -->
 

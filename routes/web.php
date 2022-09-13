@@ -3,8 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     ExpenseInvoiceController,StockProductListController,ProductExpenseController,
-    ProductLimitController,MenuItemController};
-use App\Http\Controllers\test\Testcontroller;
+    ProductLimitController,MenuItemController,OrderController,OrderDetailsController};
 
 
 
@@ -106,6 +105,31 @@ use App\Http\Controllers\test\Testcontroller;
     Route::get('/edit/{id}', [MenuItemController::class, 'edit'])->name('menu_item.edit');
     Route::post('/update/{id}', [MenuItemController::class, 'update'])->name('menu_item.update');
     Route::get('/delete/{id}', [MenuItemController::class, 'delete'])->name('menu_item.delete');
+    });
+
+
+    /************************************************************
+     ***          Order List Route Are Here                   ***
+     ************************************************************/
+    Route::prefix('order-items')->middleware('auth')->group(function () {
+    Route::get('/view', [OrderController::class, 'view'])->name('order_item.view');
+    Route::get('/add', [OrderController::class, 'addForm'])->name('order_item.add_form');
+    Route::post('/store', [OrderController::class, 'store'])->name('order_item.store');
+    Route::get('/edit/{id}', [OrderController::class, 'edit'])->name('order_item.edit');
+    Route::post('/update/{id}', [OrderController::class, 'update'])->name('order_item.update');
+    Route::get('/delete/{id}', [OrderController::class, 'delete'])->name('order_item.delete');
+
+    Route::get('/search-item', [OrderController::class, 'autocomplete'])->name('autocomplete.item');
+    });
+    /************************************************************
+     ***          Order Details List Route Are Here           ***
+     ************************************************************/
+    Route::prefix('order-details')->middleware('auth')->group(function () {
+    Route::get('/view', [OrderDetailsController::class, 'view'])->name('order_details.view');
+    Route::post('/store', [OrderDetailsController::class, 'store'])->name('order_details.store');
+    Route::get('/edit/{id}', [OrderDetailsController::class, 'edit'])->name('order_details.edit');
+    Route::post('/update/{id}', [OrderDetailsController::class, 'update'])->name('order_details.update');
+    Route::get('/delete/{id}', [OrderDetailsController::class, 'delete'])->name('order_details.delete');
     });
 
 
