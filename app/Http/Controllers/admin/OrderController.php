@@ -53,35 +53,54 @@ class OrderController extends Controller
             'price' => 'required',
         ]);
 
-        $data = new Order();
 
-        $data->invoice_number = $request->invoice_number;
-        $data->date = $request->date;
-        $data->table_number = $request->table_number;
-        $data->total_amount = $request->total_amount;
-        $data->paid_amount = $request->paid_amount;
-        $data->discount_amount = $request->discount_amount;
-        $result = $data->save();
 
-        
+           
+                foreach ($request->item_name as $key=>$item_name) { 
+                    $getproductid = Menuitem::where('item_name',$request->item_name[$key])->first(); 
+                    if(empty($getproductid)){
+                         
+                         Orderdetail::where('invoice_id',$request->invoice_number)->delete();
 
-        if ($result) {
-            foreach ($request->item_name as $key=>$item_name) { 
-                $orderDetail = new Orderdetail();
-                $orderDetail->item_name = $request->item_name[$key];
-                $orderDetail->item_quantity = $request->item_quantity[$key];
-                $orderDetail->unit_price = $request->unit_price[$key];
-                $orderDetail->price = $request->price[$key];
-               
-                $Submit = $orderDetail->save();
+                        $notification = array(
+                            'messege' => 'Item Not Available',
+                            'alert-type' => 'error'
+                        );
+                        return redirect()->route('order_item.view')->with($notification);
+                    }
+                    else{
+                        $productId = $getproductid->id;
+                    $orderDetail = new Orderdetail();
+                    $orderDetail->item_id = $productId;
+                    $orderDetail->invoice_id = $request->invoice_number;
+                    $orderDetail->item_quantity = $request->item_quantity[$key];
+                    $orderDetail->unit_price = $request->unit_price[$key];
+                    $orderDetail->price = $request->price[$key];
                    
+                    $Submit = $orderDetail->save();
+                    }   
+                
+
             }
+
+            $data = new Order();
+
+            $data->invoice_number = $request->invoice_number;
+            $data->date = $request->date;
+            $data->table_number = $request->table_number;
+            $data->total_amount = $request->total_amount;
+            $data->paid_amount = $request->paid_amount;
+            $data->discount_amount = $request->discount_amount;
+            $result = $data->save();
+
+            if($result){
             $notification = array(
                 'messege' => 'Order Added Successfully',
                 'alert-type' => 'success'
             );
             return redirect()->route('order_item.view')->with($notification);
         }
+        
     }
 
 

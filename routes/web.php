@@ -121,15 +121,13 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
 
     Route::get('/search-item', [OrderController::class, 'autocomplete'])->name('autocomplete.item');
     });
+
+
     /************************************************************
      ***          Order Details List Route Are Here           ***
      ************************************************************/
     Route::prefix('order-details')->middleware('auth')->group(function () {
     Route::get('/view', [OrderDetailsController::class, 'view'])->name('order_details.view');
-    Route::post('/store', [OrderDetailsController::class, 'store'])->name('order_details.store');
-    Route::get('/edit/{id}', [OrderDetailsController::class, 'edit'])->name('order_details.edit');
-    Route::post('/update/{id}', [OrderDetailsController::class, 'update'])->name('order_details.update');
-    Route::get('/delete/{id}', [OrderDetailsController::class, 'delete'])->name('order_details.delete');
     });
 
 

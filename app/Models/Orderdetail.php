@@ -10,7 +10,8 @@ class Orderdetail extends Model
     use HasFactory;
 
     protected $fillable = [
-        'item_name',
+        'invoice_id',
+        'item_id',
         'item_quantity',
         'unit_price',
         'price',
