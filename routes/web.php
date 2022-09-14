@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     ExpenseInvoiceController,StockProductListController,ProductExpenseController,
-    ProductLimitController,MenuItemController,OrderController,OrderDetailsController};
+    ProductLimitController,MenuItemController,OrderController,OrderDetailsController,
+    PDFController};
 
 
 
@@ -128,6 +129,13 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
      ************************************************************/
     Route::prefix('order-details')->middleware('auth')->group(function () {
     Route::get('/view', [OrderDetailsController::class, 'view'])->name('order_details.view');
+    });
+    /************************************************************
+     ***           PDf  Route Are Here                        ***
+     ************************************************************/
+    Route::prefix('invoice')->middleware('auth')->group(function () {
+    Route::get('/order/{id}', [PDFController::class, 'generatePDF'])->name('order_pdf.view');
+    Route::get('/expense/{id}', [PDFController::class, 'expenseInvoice'])->name('expense_pdf.view');
     });
 
 

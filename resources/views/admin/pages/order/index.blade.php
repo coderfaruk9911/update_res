@@ -73,8 +73,8 @@
                         <td>{{$row->paid_amount}}</td>
                         <td>{{$row->date}}</td>
                         <td>
-                          <a href="{{route('order_item.delete',$row->id)}}" title="Delete Order" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
-                          {{-- <a href="{{route('expense_invoice.edit',$row->id)}}" title="Edit Invoice" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a> --}}
+                          {{-- <a href="{{route('order_item.delete',$row->id)}}" title="Delete Order" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a> --}}
+                          <a href="{{route('order_pdf.view',$row->id)}}" title="Edit Invoice" class="btn btn-success btn-sm">Download Invoice</a>
                           {{-- <a href="{{route('order_item.show',$row->id)}}" title="View Invoice Order" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a> --}}
                         </td>
                     </tr>

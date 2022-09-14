@@ -174,7 +174,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="inputprice">Due Amount</label>
-                                    <input type="text" readonly name="due_amount" id="due_amount" class="form-control">
+                                    <input type="text" readonly name="due_amount" value="0" id="due_amount" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-2"> </div>

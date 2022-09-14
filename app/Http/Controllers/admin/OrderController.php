@@ -52,7 +52,7 @@ class OrderController extends Controller
             'unit_price' => 'required',
             'price' => 'required',
         ]);
-
+        date_default_timezone_set("Asia/Dhaka");
 
 
            

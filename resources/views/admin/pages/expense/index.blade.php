@@ -76,6 +76,7 @@
                           <a href="{{route('expense_invoice.delete',$row->id)}}" title="Delete Invoice" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                           {{-- <a href="{{route('expense_invoice.edit',$row->id)}}" title="Edit Invoice" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a> --}}
                           <a href="{{route('expense_invoice.show',$row->id)}}" title="View Invoice Details" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
+                          <a href="{{route('expense_pdf.view',$row->invoice_number)}}" title="Download Invoice" class="btn btn-success btn-sm"><i class="fas fa-download"></i></a>
                         </td>
                     </tr>
                     @endforeach
