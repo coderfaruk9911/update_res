@@ -159,7 +159,7 @@
                         
                     </div>
                 <div class="modal-footer text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" id="redirectOrderList" data-target="https://stackoverflow.com/"  class="btn btn-primary">Submit</button>
                 </div>
             </form>
             </div>
@@ -236,6 +236,10 @@
 
 
   <script>
+
+
+
+
     	/**When keyup qty Field this function Run*/
 	function qty(id)
 
@@ -313,6 +317,66 @@
 		total_price();
 	}
   </script>
+
+
+<script>
+//     $('#redirectOrderList').submit(function() {
+//         window.location.href = "https://stackoverflow.com/";
+
+// });
+
+
+$('#redirectOrderList').on('submit', function(event) {
+    event.preventDefault(); 
+    var url = $(this).data('target');
+    location.replace(url);
+});
+</script>
+
+
+    {{-- <script type="text/javascript">
+
+$(document).ready(function(){
+
+
+    $("#redirectOrderList").on('click', function (e) {
+        e.preventDefault();
+        $.ajax({
+            
+    
+    url:'{{route('order_item.view')}}';
+
+    type: 'GET',
+
+    dataType: "json",
+
+
+  }); --}}
+{{-- //    window.location.href = '{{route('order_item.view')}}';
+   //stop form submission
+//    e.preventDefault();
+// });
+
+
+
+    //         $(document).on("click", "#redirectOrderList", function() {
+    //             if ($('#test2').is(':visible')) {
+    //                 $('#test2').hide();
+    //             } else {
+    //                 $('#test2').show();
+    //             };
+    //         });
+    //     });
+
+
+
+    //     $('#redirectOrderList').submit(function() {
+    // window.location.href = '{{route('order_item.view')}}';
+    // return false;
+// });
+// </script> --}}
+
+
 
 
 @endsection

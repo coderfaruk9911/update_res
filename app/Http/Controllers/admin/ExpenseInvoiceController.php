@@ -239,4 +239,9 @@ class ExpenseInvoiceController extends Controller
         }
        
     }
+
+
+    public function redirect(){
+        return redirect()->route('order_item.view');
+    }
 }

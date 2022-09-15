@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     ExpenseInvoiceController,StockProductListController,ProductExpenseController,
     ProductLimitController,MenuItemController,OrderController,OrderDetailsController,
-    PDFController};
+    PDFController,Administrativecost};
 
 
 
@@ -40,6 +40,17 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     Route::get('/edit/{id}', [ProductLimitController::class, 'edit'])->name('product_limit.edit');
     Route::post('/update/{id}', [ProductLimitController::class, 'update'])->name('product_limit.update');
     Route::get('/delete/{id}', [ProductLimitController::class, 'delete'])->name('product_limit.delete');
+    });
+
+    /************************************************************
+     ***     Administrative cost Route Are Here               ***
+     ************************************************************/
+    Route::prefix('administrative-cost')->middleware('auth')->group(function () {
+    Route::get('/view', [Administrativecost::class, 'view'])->name('administrative_cost.view');
+    Route::post('/store', [Administrativecost::class, 'store'])->name('administrative_cost.store');
+    Route::get('/edit/{id}', [Administrativecost::class, 'edit'])->name('administrative_cost.edit');
+    Route::post('/update/{id}', [Administrativecost::class, 'update'])->name('administrative_cost.update');
+    Route::get('/delete/{id}', [Administrativecost::class, 'delete'])->name('administrative_cost.delete');
     });
 
 
@@ -120,6 +131,8 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     Route::post('/update/{id}', [OrderController::class, 'update'])->name('order_item.update');
     Route::get('/delete/{id}', [OrderController::class, 'delete'])->name('order_item.delete');
 
+    Route::get('/show/{id}', [OrderController::class, 'show'])->name('order_item.show');
+
     Route::get('/search-item', [OrderController::class, 'autocomplete'])->name('autocomplete.item');
     });
 
@@ -140,6 +153,7 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
 
 
     Route::get('/search-product', [ExpenseInvoiceController::class, 'autocomplete'])->name('autocomplete');
+    Route::get('/redirect-page', [ExpenseInvoiceController::class, 'redirect'])->name('redirect.page');
 
 
     

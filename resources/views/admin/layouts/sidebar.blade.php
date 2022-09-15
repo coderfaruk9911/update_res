@@ -71,6 +71,31 @@
             <!-- End Product Limit Section -->
 
 
+            <!-- Product Limit Section -->
+            @if ( Auth::user()->role == 'admin' || Auth::user()->role == 'buyer')
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-gift"></i>
+                <p>
+                  Administrative Cost
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+  
+                <li class="nav-item">
+                  <a href="{{route('administrative_cost.view')}}" class="nav-link">
+                    <i class="fa fa-eye nav-icon"></i>
+                    <p>Administrative Cost List</p>
+                  </a>
+                </li>
+  
+              </ul>
+            </li>
+            @endif
+            <!-- End Product Limit Section -->
+
+
 
 
           <!-- Buyer Section -->

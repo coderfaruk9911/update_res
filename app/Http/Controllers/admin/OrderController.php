@@ -7,12 +7,17 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Menuitem;
 use App\Models\Orderdetail;
+use PDF;
+use DB;
 
 class OrderController extends Controller
 {
     public function view(){
-        $OrderList = Order::all();
-        return view('admin.pages.order.index',compact('OrderList'));
+        $OrderList = Order::orderBy('id', 'desc')->get();
+        $lastRow = Order::latest('id')->first();
+        $lastInsertId = $lastRow->id;
+
+        return view('admin.pages.order.index',compact('OrderList','lastInsertId'));
     }
 
     public function addForm(){
@@ -92,13 +97,37 @@ class OrderController extends Controller
             $data->paid_amount = $request->paid_amount;
             $data->discount_amount = $request->discount_amount;
             $result = $data->save();
+            
 
             if($result){
             $notification = array(
                 'messege' => 'Order Added Successfully',
                 'alert-type' => 'success'
             );
-            return redirect()->route('order_item.view')->with($notification);
+            // return redirect()->route('order_item.view')->with($notification);
+
+            date_default_timezone_set("Asia/Dhaka");
+            $lastInsertId = DB::getPdo()->lastInsertId();
+            
+
+            $order =Order::where('id',$lastInsertId)->first();    
+            $orderdetials = Orderdetail::join('menuitems','menuitems.id','orderdetails.item_id')
+            ->where('invoice_id',$order->invoice_numbe)->get();
+            $name = 'Order-'.date('m-d-Y-h-i').'.'.'pdf';
+
+            $data = [
+                'order' => $order,
+                'orderdetials' => $orderdetials,
+                'invoice_numbe' => $request->invoice_numbe,
+                'date' => $request->date,
+                'total_amount' => $request->total_amount,
+                'paid_amount' => $request->paid_amount,
+                'discount_amount' => $request->discount_amount,
+            ];
+              
+            $pdf = PDF::loadView('admin.pages.pdf.auto_invoice', $data);
+        
+            return $pdf->download($name);
         }
         
     }
@@ -106,12 +135,12 @@ class OrderController extends Controller
 
 
     public function show($id){
-        $showData = Expensedetails::join('expenses', 'expenses.invoice_number', '=', 'expensedetails.expense_id')
-                ->join('stockproductlists', 'stockproductlists.id', '=', 'expensedetails.product_id')
-                ->select( 'expenses.*' , 'expensedetails.*','stockproductlists.product_name')
-                ->where('expenses.id', '=', $id)
+        $showData = Orderdetail::join('orders', 'orders.invoice_number', '=', 'orderdetails.invoice_id')
+                ->join('menuitems', 'menuitems.id', '=', 'orderdetails.item_id')
+                ->select( 'orders.*' , 'orderdetails.*','menuitems.item_name')
+                ->where('orders.invoice_number', '=', $id)
                 ->get();
-        return view('admin.pages.expense.show', compact('showData'));
+        return view('admin.pages.order.show', compact('showData'));
     }
 
     public function edit($id){

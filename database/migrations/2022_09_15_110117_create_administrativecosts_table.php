@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDailyproductexpensesTable extends Migration
+class CreateAdministrativecostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateDailyproductexpensesTable extends Migration
      */
     public function up()
     {
-        Schema::create('dailyproductexpenses', function (Blueprint $table) {
+        Schema::create('administrativecosts', function (Blueprint $table) {
             $table->id();
-            $table->string('expense_date');
-            $table->string('product_name')->nullable();
-            $table->string('product_id');
-            $table->string('quantity');
-            
+            $table->string('date');
+            $table->string('name');
+            $table->string('amount');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateDailyproductexpensesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dailyproductexpenses');
+        Schema::dropIfExists('administrativecosts');
     }
 }

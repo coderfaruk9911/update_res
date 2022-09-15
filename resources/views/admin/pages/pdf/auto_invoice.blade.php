@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Expense Invoice</title>
+	<title>Simple Invoice</title>
 	{{-- <link rel="stylesheet" type="text/css" href="css/style.css"> --}}
     <style>
         *{
@@ -118,6 +118,9 @@ table td{
 <body>
     <div class="invoice_container" style="text-align: center;">
 		<div class="invoice_header">
+			{{-- <div class="logo_container">
+				<img src="https://webeecafe.com/public/assets/img/wclogo.png">
+			</div> --}}
 				<h2>Resturent Name</h2>
 				<p>
 					Resturent Description, Here <br>
@@ -131,31 +134,25 @@ table td{
 				<h1 class="in_head">INVOICE</h1>
 				<table class="tables">
 					<tr>
-						<td>Invoice Number</td>
+						<td>Invoice No</td>
 						<td>:</td>
-						<td><b>#{{$expenses->invoice_number}}</b></td>
+						<td><b>#{{$order->invoice_number}}</b></td>
 					</tr>
 					<tr>
 						<td>Date</td>
 						<td>:</td>
-						<td><b>{{$expenses->invoice_date}}</b></td>
+						<td><b>{{$order->date}}</b></td>
 					</tr>
 					<tr>
 						<td>Time</td>
 						<td>:</td>
-						<td><b>{{$expenses->created_at->format('h:i:s')}}</b></td>
+						<td><b>{{$order->created_at->format('h:i:s')}}</b></td>
 					</tr>
-					<tr>
-						<td>Company</td>
+					{{-- <tr>
+						<td>Bill No</td>
 						<td>:</td>
-						<td><b>{{$expenses->company_name}}</b></td>
-					</tr>
-					<tr>
-						<td>Contact</td>
-						<td>:</td>
-						<td><b>{{$expenses->contact_number}}</b></td>
-					</tr>
-					
+						<td><b>02500</b></td>
+					</tr> --}}
 				</table>
 			</div>
 		</div>
@@ -165,20 +162,18 @@ table td{
 			<table class="item_table" border="1" cellspacing="0">
 				<tr>
 					<th>Sl. No.</th>
-					<th>Product Name</th>
-					<th>Quantity</th>
+					<th>Item Name</th>
 					<th>Unit Price</th>
-					<th>Unit</th>
+					<th>Qty</th>
 					<th>Price</th>
 				</tr>
-				@foreach ($expensesDetails as $key=> $row)
+				@foreach ($orderdetials as $key=> $row)
 				<tr>
 					
 					<td>{{++$key}}</td>
-					<td>{{$row->product_name}}</td>
-					<td>{{$row->quantity}} {{$row->unit_title}}</td>
+					<td>{{$row->item_name}}</td>
 					<td>{{$row->unit_price}}</td>
-					<td>{{$row->unit}}</td>
+					<td>{{$row->item_quantity}}</td>
 					<td >{{$row->price}}</td>
 				
 				</tr>
@@ -187,34 +182,58 @@ table td{
 				<tr>
 					<th class="borderNone"></th>
 					<th class="borderNone"></th>
-					<th class="borderNone"></th>
-					<th colspan="2" >Total</th>
-					<th>{{$expenses->total_amount}}</th>
+					<th colspan="2" >Total Amount</th>
+					<th>{{$order->total_amount}}</th>
 				</tr>
 				<tr>
 					<th class="borderNone"></th>
 					<th class="borderNone"></th>
-					<th class="borderNone"></th>
-					<th colspan="2" >VAT (%)</th>
+					<th colspan="2" >VAT(%)</th>
 					<th></th>
 				</tr>
 				<tr>
 					<th class="borderNone"></th>
 					<th class="borderNone"></th>
-					<th class="borderNone"></th>
-					<th colspan="2">Due Amount</th>
-					<th>{{$expenses->due_amount}}</th>
+					<th colspan="2">Discount Amount</th>
+					<th>{{$order->discount_amount}}</th>
 				</tr>
-				<tr>
-					<th class="borderNone"></th>
+				<tr class="borderNone">
 					<th class="borderNone"></th>
 					<th class="borderNone"></th>
 					<th colspan="2">Paid Amount</th>
-					<th>{{$expenses->paid_amount}}</th>
+					<th>{{$order->paid_amount}}</th>
 				</tr>
 				
 			</table>
 		</div>
+		{{-- <div class="invoice_footer">
+			<div class="note">
+				<h2>Thank You Message!</h2>
+				<p>
+					 scrambled it to make a type specimen book.
+				</p>
+			</div>
+			<div class="invoice_footer_amount">
+				<table class="amount_table"   cellspacing="0">
+					<tr>
+						<td>Tax amount</td>
+						<td>: <b>6000</b></td>
+					</tr>
+					<tr>
+						<td>Grand Total</td>
+						<td>: <b>160500</b></td>
+					</tr>
+					<tr>
+						<td>Paid amount</td>
+						<td>: <b>156000</b></td>
+					</tr>
+					<tr>
+						<td>Due amount</td>
+						<td>: <b>10000</b></td>
+					</tr>
+				</table>
+			</div>
+		</div> --}}
 	</div>
 </body>
 </html>
