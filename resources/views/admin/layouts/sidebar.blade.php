@@ -195,6 +195,14 @@
                 </a>
               </li>
 
+
+              <li class="nav-item">
+                <a href="{{route('sale_report.view')}}" class="nav-link">
+                  <i class="fa fa-eye nav-icon"></i>
+                  <p>Sale Report</p>
+                </a>
+              </li>
+
               
 
 

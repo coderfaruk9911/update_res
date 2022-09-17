@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     ExpenseInvoiceController,StockProductListController,ProductExpenseController,
     ProductLimitController,MenuItemController,OrderController,OrderDetailsController,
-    PDFController,Administrativecost};
+    PDFController,Administrativecost,SaleReportController};
 
 
 
@@ -135,6 +135,22 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
 
     Route::get('/search-item', [OrderController::class, 'autocomplete'])->name('autocomplete.item');
     });
+
+
+
+
+
+    /************************************************************
+     ***          Sale Report Route Are Here                  ***
+     ************************************************************/
+    Route::prefix('sale-report')->middleware('auth')->group(function () {
+    Route::get('/view', [SaleReportController::class, 'view'])->name('sale_report.view');
+    Route::get('/todaySales', [SaleReportController::class, 'todaySales'])->name('todaySales.details');
+    Route::get('/weeklySales', [SaleReportController::class, 'weeklySales'])->name('weeklySales.details');
+    Route::get('/monthlySales', [SaleReportController::class, 'monthlySales'])->name('monthlySales.details');
+    Route::get('/yearlySales', [SaleReportController::class, 'yearlySales'])->name('yearlySales.details');
+    });
+
 
 
     /************************************************************

@@ -327,9 +327,11 @@
 
 
 $('#redirectOrderList').on('submit', function(event) {
+    
+    window.location.href = 'https://www.google.com';
     event.preventDefault(); 
     var url = $(this).data('target');
-    location.replace(url);
+    location.replace('https://www.google.com');
 });
 </script>
 

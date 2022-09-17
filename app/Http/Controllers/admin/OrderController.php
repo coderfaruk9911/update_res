@@ -110,9 +110,10 @@ class OrderController extends Controller
             $lastInsertId = DB::getPdo()->lastInsertId();
             
 
-            $order =Order::where('id',$lastInsertId)->first();    
+            $order =Order::where('id',$lastInsertId)->first(); 
             $orderdetials = Orderdetail::join('menuitems','menuitems.id','orderdetails.item_id')
-            ->where('invoice_id',$order->invoice_numbe)->get();
+            ->where('invoice_id',$order->invoice_number)->get();
+
             $name = 'Order-'.date('m-d-Y-h-i').'.'.'pdf';
 
             $data = [

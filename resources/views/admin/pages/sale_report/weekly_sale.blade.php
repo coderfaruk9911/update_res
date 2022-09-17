@@ -1,6 +1,6 @@
 @if ( Auth::user()->role == 'admin' || Auth::user()->role == 'buyer')
 @extends('admin.layouts.master')
-@section('title','Order List')
+@section('title','Weekly Sale')
 
 @section('admin-content')
 
@@ -11,34 +11,19 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Order List</h1>
+            <h1>Weekly Sale</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url('/home')}}">Home</a></li>
-              <li class="breadcrumb-item active">Order List</li>
+              <li class="breadcrumb-item active">Weekly Sale</li>
             </ol>
           </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
 
-    <!-- Error Massage -->
-    <div class="container">
-      <div class="row d-flex justify-content-center">
-          <div class="col-6">
-              @if ($errors->any())
-                  <div class="alert alert-danger">
-                      <ul>
-                          @foreach ($errors->all() as $error)
-                              <li>{{ $error }}</li>
-                          @endforeach
-                      </ul>
-                  </div>
-              @endif
-          </div>
-      </div>
-  </div>
+
 
     <!-- Main content -->
     <section class="content">
@@ -48,35 +33,29 @@
 
             <div class="card">
               <div class="card-header">
-                <a href="{{route('order_item.add_form')}}"   class="btn btn-primary float-right"> New Order </a>
+                {{-- <a href="#" data-toggle="modal" data-target="#modal-default" class="btn btn-primary float-right"> </a> --}}
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example" class="table table-bordered table-striped">
+                <table id="" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Invoice No.</th>
-                    <th>Table No.</th>
+                    <th>Invoice Number</th>
+                    <th>Table Number</th>
                     <th>Total Amount</th>
                     <th>Paid Amount</th>
-                    <th>Date</th>
-                    <th>Action</th>
+                    <th>Discount Amount</th>
                   </tr>
                   </thead>
                   <tbody>
 
-                    @foreach ($OrderList as $key => $row)
+                    @foreach ($currentWeekSaleData as $key => $row)
                     <tr>
                         <td>{{$row->invoice_number}}</td>
                         <td>{{$row->table_number}}</td>
                         <td>{{$row->total_amount}}</td>
                         <td>{{$row->paid_amount}}</td>
-                        <td>{{$row->date}}</td>
-                        <td>
-                          {{-- <a href="{{route('order_item.delete',$row->id)}}" title="Delete Order" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a> --}}
-                          <a href="{{route('order_item.show',$row->invoice_number)}}" title="View Invoice Order" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
-                          <a href="{{route('order_pdf.view',$row->id)}}" title="Download Invoice" class="btn btn-success btn-sm"><i class="fas fa-download"></i></a>
-                        </td>
+                        <td>{{$row->discount_amount}}</td>
                     </tr>
                     @endforeach
                   
@@ -95,7 +74,6 @@
     </section>
     <!-- /.content -->
   </div>
-
 
 @endsection
 @endif
