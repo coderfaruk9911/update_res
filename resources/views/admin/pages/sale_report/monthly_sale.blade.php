@@ -1,6 +1,6 @@
 @if ( Auth::user()->role == 'admin' || Auth::user()->role == 'buyer')
 @extends('admin.layouts.master')
-@section('title','Monthly Sale')
+@section('title','Monthly Sale Report')
 
 @section('admin-content')
 
@@ -11,12 +11,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Monthly Sale</h1>
+            <h1>Monthly Sale Report</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url('/home')}}">Home</a></li>
-              <li class="breadcrumb-item active">Monthly Sale</li>
+              <li class="breadcrumb-item active">Monthly Sale Report</li>
             </ol>
           </div>
         </div>
@@ -33,7 +33,8 @@
 
             <div class="card">
               <div class="card-header">
-                {{-- <a href="#" data-toggle="modal" data-target="#modal-default" class="btn btn-primary float-right"> </a> --}}
+                <a href="{{route('sale_report.view')}}" class="btn btn-dark font-weight-bold"> <i class="fa fa-arrow-left"></i> Back</a>
+                <a href="{{route('monthly_sales_pdf.view')}}" class="btn btn-success float-right"> Download PDF</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -42,22 +43,24 @@
                   <tr>
                     <th>Invoice Number</th>
                     <th>Table Number</th>
-                    <th>Total Amount</th>
-                    <th>Paid Amount</th>
-                    <th>Discount Amount</th>
+                    <th>Invoice Amount</th>
                   </tr>
                   </thead>
                   <tbody>
 
-                    @foreach ($currentMonthData as $key => $row)
+                    @foreach ($currentMonthData  as $key => $row)
                     <tr>
                         <td>{{$row->invoice_number}}</td>
                         <td>{{$row->table_number}}</td>
-                        <td>{{$row->total_amount}}</td>
                         <td>{{$row->paid_amount}}</td>
-                        <td>{{$row->discount_amount}}</td>
                     </tr>
                     @endforeach
+
+                    <tr>
+                      <td></td>
+                      <td>Total Amount</td>
+                      <td>{{$currentMonthTotal}} TK.</td>
+                    </tr>
                   
                   </tbody>
                 </table>

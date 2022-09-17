@@ -1,6 +1,6 @@
 @if ( Auth::user()->role == 'admin' || Auth::user()->role == 'buyer')
 @extends('admin.layouts.master')
-@section('title','Sale Report')
+@section('title','Sales Summary')
 
 
 
@@ -11,12 +11,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Sale Report</h1>
+          <h1 class="m-0">Sales Summary Report</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
-            <li class="breadcrumb-item active">Sale Report</li>
+            <li class="breadcrumb-item active">Sales Summary</li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -33,9 +33,9 @@
           <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>{{$todaySaleCount}}</h3>
+              <h3>{{$todaySaleSum}} BDT.</h3>
 
-              <p>Today Sale</p>
+              <p>Today's Sale</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -48,7 +48,7 @@
           <!-- small box -->
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>{{$currentWeekSaleCount}}</h3>
+              <h3>{{$currentWeekSaleSum}} BDT.</h3>
 
               <p>Weekly Sale</p>
             </div>
@@ -63,7 +63,7 @@
           <!-- small box -->
           <div class="small-box bg-warning">
             <div class="inner">
-              <h3>{{$currentMonthCount}}</h3>
+              <h3>{{$currentMonthSum}} BDT.</h3>
 
               <p>Monthly Sale</p>
             </div>
@@ -78,7 +78,7 @@
           <!-- small box -->
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>{{$currentYearCount}}</h3>
+              <h3>{{$currentYearSum}} BDT.</h3>
 
               <p>Total Sale</p>
             </div>

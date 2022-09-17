@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     ExpenseInvoiceController,StockProductListController,ProductExpenseController,
     ProductLimitController,MenuItemController,OrderController,OrderDetailsController,
-    PDFController,Administrativecost,SaleReportController};
+    PDFController,Administrativecost,SaleReportController,PDFSaleSReportController};
 
 
 
@@ -165,6 +165,15 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     Route::prefix('invoice')->middleware('auth')->group(function () {
     Route::get('/order/{id}', [PDFController::class, 'generatePDF'])->name('order_pdf.view');
     Route::get('/expense/{id}', [PDFController::class, 'expenseInvoice'])->name('expense_pdf.view');
+
+
+    // sale report
+    Route::get('/todays/sales', [PDFSaleSReportController::class, 'todaysSalePdf'])->name('today_sales_pdf.view');
+    Route::get('/weekly/sales', [PDFSaleSReportController::class, 'weeklySalePdf'])->name('weekly_sales_pdf.view');
+    Route::get('/monthly/sales', [PDFSaleSReportController::class, 'monthlySalePdf'])->name('monthly_sales_pdf.view');
+    Route::get('/yearly/sales', [PDFSaleSReportController::class, 'yearlySalePdf'])->name('yearly_sales_pdf.view');
+
+
     });
 
 
