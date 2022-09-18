@@ -134,26 +134,21 @@ table td{
 		<div class="product_container">
 			<table class="item_table" border="1" cellspacing="0">
 				<tr>
-					<th>Sl. No.</th>
-					<th>Invoice Number</th>
-					<th>Table Number</th>
-					<th>Invoice Amount</th>
+					<th>Date</th>
+					<th>Amount</th>
 				</tr>
 				@foreach ($currentWeekSaleData as $key=> $row)
 				<tr>
 					
-					<td>{{++$key}}</td>
-					<td>{{$row->invoice_number}}</td>
-					<td>{{$row->table_number}}</td>
-					<td>{{$row->paid_amount}} tk</td>
+					<td>{{$key}}</td>
+					<td>{{$row->sum('paid_amount')}} tk</td>
 				
 				</tr>
 				@endforeach
 
 				<tr>
-					<th class="borderNone"></th>
-					<th class="borderNone"></th>
-					<th colspan="1" >Total Amount</th>
+					
+					<th >Total Amount</th>
 					<th>{{$currentWeekTotal}} BDT.</th>
 				</tr>
 				

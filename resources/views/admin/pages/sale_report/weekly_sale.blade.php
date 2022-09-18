@@ -41,8 +41,7 @@
                 <table id="" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Invoice Number</th>
-                    <th>Table Number</th>
+                    <th>Date</th>
                     <th>Invoice Amount</th>
                   </tr>
                   </thead>
@@ -50,14 +49,12 @@
 
                     @foreach ($currentWeekSaleData as $key => $row)
                     <tr>
-                        <td>{{$row->invoice_number}}</td>
-                        <td>{{$row->table_number}}</td>
-                        <td>{{$row->paid_amount}} TK.</td>
+                        <td>{{$key}}</td>
+                        <td>{{$row->sum('paid_amount')}} TK.</td>
                     </tr>
                     @endforeach
 
                     <tr>
-                      <td></td>
                       <td>Total Amount</td>
                       <td>{{$currentWeekTotal}} TK.</td>
                     </tr>

@@ -35,15 +35,19 @@ class SaleReportController extends Controller
         return view('admin.pages.sale_report.today_sale',compact('todaySaleData','todaysTotal'));
     }
     public function weeklySales(){
-        $previousWeek = Carbon::now()->subDays(7);
-        $currentWeekSaleData = Order::where('date', '>=', $previousWeek)->get();
-        $currentWeekTotal = Order::where('date', '>=', $previousWeek)->sum('paid_amount');
+        $currentWeekSaleData = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->orderBy('created_at','desc')->get()->groupBy(function($item) {
+            return $item->created_at->format('Y-m-d');
+       });
+        $currentWeekTotal = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('paid_amount');
 
         return view('admin.pages.sale_report.weekly_sale',compact('currentWeekSaleData','currentWeekTotal'));
     }
 
     public function monthlySales(){
-        $currentMonthData = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->get();
+        $currentMonthData = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->orderBy('created_at','desc')->get()->groupBy(function($item) {
+            return $item->created_at->format('Y-m-d');
+       });
+    //    dd($currentMonthData->toArray());
         $currentMonthTotal = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->sum('paid_amount');
 
         return view('admin.pages.sale_report.monthly_sale',compact('currentMonthData','currentMonthTotal'));

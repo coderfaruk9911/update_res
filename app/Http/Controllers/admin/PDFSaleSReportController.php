@@ -32,9 +32,11 @@ class PDFSaleSReportController extends Controller
 
     public function weeklySalePdf()
     {   
-        $previousWeek = Carbon::now()->subDays(7);
-        $currentWeekSaleData = Order::where('date', '>=', $previousWeek)->get();
-        $currentWeekTotal = Order::where('date', '>=', $previousWeek)->sum('paid_amount');
+        $currentWeekSaleData = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->orderBy('created_at','desc')->get()->groupBy(function($item) {
+            return $item->created_at->format('Y-m-d');
+       });
+
+        $currentWeekTotal = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('paid_amount');Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('paid_amount');
 
         $name = 'weekly_sale-'.date('m-d-Y-h-i').'.'.'pdf';
         
@@ -52,7 +54,9 @@ class PDFSaleSReportController extends Controller
 
     public function monthlySalePdf()
     {   
-        $currentMonthData = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->get();
+        $currentMonthData = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->get()->groupBy(function($item) {
+            return $item->created_at->format('Y-m-d');
+       });
         $currentMonthTotal = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->sum('paid_amount');
 
         $name = 'monthly_sale-'.date('m-d-Y-h-i').'.'.'pdf';
