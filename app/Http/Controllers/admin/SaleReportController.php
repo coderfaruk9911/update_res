@@ -10,9 +10,12 @@ use Carbon\Carbon;
 
 class SaleReportController extends Controller
 {
-    public function view(){
+    public function view(Request $request){
+        
         $today = Carbon::today()->toDateString();
-        $previousWeek = Carbon::now()->subDays(7);
+        $datewiseData = Order::where('date', $request->date)->get();
+        $datewiseTotal = Order::where('date', $request->date)->sum('paid_amount');
+        $date =$request->date;
 
         // $todaySaleCount = Order::where('date',$today)->count();
         // $currentWeekSaleCount = Order::where('created_at', '>=', $previousWeek)->count();
@@ -20,11 +23,11 @@ class SaleReportController extends Controller
         // $currentYearCount = Order::whereYear('created_at', Carbon::now()->year)->count();
 
         $todaySaleSum = Order::where('date',$today)->sum('paid_amount');
-        $currentWeekSaleSum = Order::where('created_at', '>=', $previousWeek)->sum('paid_amount');
+        $currentWeekSaleSum = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('paid_amount');
         $currentMonthSum = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->sum('paid_amount');
         $currentYearSum = Order::whereYear('created_at', Carbon::now()->year)->sum('paid_amount');
 
-        return view('admin.pages.sale_report.index',compact('todaySaleSum','currentWeekSaleSum','currentMonthSum','currentYearSum'));
+        return view('admin.pages.sale_report.index',compact('todaySaleSum','currentWeekSaleSum','currentMonthSum','currentYearSum','datewiseData','datewiseTotal','date'));
     }
 
     public function todaySales(){
@@ -62,5 +65,29 @@ class SaleReportController extends Controller
     }
 
 
+
+    public function searchByDate(Request $request){
+        $today = Carbon::today()->toDateString();
+
+        $todaySaleSum = Order::where('date',$today)->sum('paid_amount');
+        $currentWeekSaleSum = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('paid_amount');
+        $currentMonthSum = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->sum('paid_amount');
+        $currentYearSum = Order::whereYear('created_at', Carbon::now()->year)->sum('paid_amount');
+
+        $datewiseData = Order::where('date', $request->date)->get();
+        $datewiseTotal = Order::where('date', $request->date)->sum('paid_amount');
+        $date = $request->date;
+
+        if(count($datewiseData) > 0){
+            return view('admin.pages.sale_report.index',compact('todaySaleSum','currentWeekSaleSum','currentMonthSum','currentYearSum','datewiseData','datewiseTotal','date'));
+        }else{
+            $notification = array(
+                'messege' => 'Item Not Found! Please try Another Date',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('sale_report.view')->with($notification);
+        }
+
+    }
 
 }

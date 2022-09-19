@@ -203,6 +203,15 @@
                 </a>
               </li>
 
+
+
+              <li class="nav-item">
+                <a href="{{route('table_list.view')}}" class="nav-link">
+                  <i class="fa fa-eye nav-icon"></i>
+                  <p>Table List</p>
+                </a>
+              </li>
+
               
 
 

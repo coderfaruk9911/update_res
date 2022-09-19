@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     ExpenseInvoiceController,StockProductListController,ProductExpenseController,
     ProductLimitController,MenuItemController,OrderController,OrderDetailsController,
-    PDFController,Administrativecost,SaleReportController,PDFSaleSReportController};
+    PDFController,Administrativecost,SaleReportController,PDFSaleSReportController,TableListController};
 
 
 
@@ -149,6 +149,10 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     Route::get('/weeklySales', [SaleReportController::class, 'weeklySales'])->name('weeklySales.details');
     Route::get('/monthlySales', [SaleReportController::class, 'monthlySales'])->name('monthlySales.details');
     Route::get('/yearlySales', [SaleReportController::class, 'yearlySales'])->name('yearlySales.details');
+
+
+    Route::get('/searchByDate/Sales', [SaleReportController::class, 'searchByDate'])->name('searchBy.date');
+
     });
 
 
@@ -172,8 +176,27 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     Route::get('/weekly/sales', [PDFSaleSReportController::class, 'weeklySalePdf'])->name('weekly_sales_pdf.view');
     Route::get('/monthly/sales', [PDFSaleSReportController::class, 'monthlySalePdf'])->name('monthly_sales_pdf.view');
     Route::get('/yearly/sales', [PDFSaleSReportController::class, 'yearlySalePdf'])->name('yearly_sales_pdf.view');
+    Route::get('/yearly/sales', [PDFSaleSReportController::class, 'yearlySalePdf'])->name('yearly_sales_pdf.view');
 
 
+    Route::get('/searchByDate/Sales/{date}', [PDFSaleSReportController::class, 'searchByDate'])->name('searchByDate.view');
+
+
+
+
+
+    });
+
+
+    /************************************************************
+     ***          Table List Route Are Here                    ***
+     ************************************************************/
+    Route::prefix('table_list')->middleware('auth')->group(function () {
+    Route::get('/view', [TableListController::class, 'view'])->name('table_list.view');
+    Route::post('/store', [TableListController::class, 'store'])->name('table_list.store');
+    Route::get('/edit/{id}', [TableListController::class, 'edit'])->name('table_list.edit');
+    Route::post('/update/{id}', [TableListController::class, 'update'])->name('table_list.update');
+    Route::get('/delete/{id}', [TableListController::class, 'delete'])->name('table_list.delete');
     });
 
 

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title> Today Invoice</title>
+	<title> Invoice</title>
     
     <style>
         *{
@@ -53,6 +53,7 @@
 .in_details{
 	margin-top: auto;
 	margin-bottom: auto;
+	width: 100%;
 }
 .tables{
     float: right;
@@ -117,13 +118,16 @@ table td{
 </head>
 <body>
     <div class="invoice_container" style="text-align: center;">
-		{{-- <div class="invoice_header">
-				<h2>Resturent Name</h2>
-		</div> --}}
 		<div class="customer_container">
 			
 			<div class="in_details">
-				<h1 class="in_head">Today's Sale ({{ date('d-m-y') }})</h1>
+				<h1 class="in_head" >
+					@foreach($datewiseData as $index => $value) 
+					@if ($index == 0) 
+						 {{ Carbon\Carbon::parse($value->date)->format('d,M,Y') }} Total Sales
+					@endif
+				@endforeach
+			</h1>
 				<table class="tables">
 					
 				</table>
@@ -134,17 +138,15 @@ table td{
 		<div class="product_container">
 			<table class="item_table" border="1" cellspacing="0">
 				<tr>
-					<th>Sl. No.</th>
-					<th>Invoice Number</th>
-					<th>Table Number</th>
-					<th>Invoice Amount</th>
+					<th style="text-align:center">Sl. No.</th>
+					<th style="text-align:center">Invoice Number</th>
+					<th style="text-align:center">Amount</th>
 				</tr>
-				@foreach ($todaySaleData as $key=> $row)
+				@foreach ($datewiseData as $key=> $row)
 				<tr>
 					
 					<td>{{++$key}}</td>
 					<td>{{$row->invoice_number}}</td>
-					<td>{{$row->table_number}}</td>
 					<td>{{$row->paid_amount}} tk</td>
 				
 				</tr>
@@ -152,9 +154,8 @@ table td{
 
 				<tr>
 					<th class="borderNone"></th>
-					<th class="borderNone"></th>
-					<th colspan="1" >Total Amount</th>
-					<th>{{$todaysTotal}} BDT.</th>
+					<th colspan="1" style="text-align:end">Total Amount:</th>
+					<th style="text-align:center">{{$datewiseTotal}} BDT.</th>
 				</tr>
 				
 			</table>

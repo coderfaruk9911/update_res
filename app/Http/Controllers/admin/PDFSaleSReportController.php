@@ -91,5 +91,13 @@ class PDFSaleSReportController extends Controller
         return $pdf->download($name);
     }
 
+    public function searchByDate($date){
+        $datewiseData = Order::where('date', $date)->get();
+        $datewiseTotal = Order::where('date', $date)->sum('paid_amount');
+
+        return view('admin.pages.pdf.date_wise_sale',compact('datewiseData','datewiseTotal'));
+
+    }
+
 
 }

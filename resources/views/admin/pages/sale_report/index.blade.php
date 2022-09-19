@@ -95,6 +95,85 @@
   </section>
   <!-- /.content -->
 
+  <section class="content mb-4">
+    <div class="container-fluid">
+        <h2 class="text-center display-5 font-weight-bold">Search By Date</h2>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form action="{{route('searchBy.date')}}">
+                    <div class="input-group">
+                        <input type="date" name="date" class="form-control form-control-lg">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (count($datewiseData)>0)
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+
+       {{-- {{ $date}}
+        @foreach ($datewiseData as $date)
+        
+        @endforeach --}}
+
+        <div class="card">
+          <div class="card-header">
+           
+            <a href="{{route('searchByDate.view',$date)}}" class="btn btn-success float-right" target="_blank"> Download PDF</a>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>Invoice Number</th>
+                <th>Table Number</th>
+                <th>Invoice Amount</th>
+              </tr>
+              </thead>
+              <tbody>
+
+                @foreach ($datewiseData as $key => $row)
+                <tr>
+                    <td>{{$row->invoice_number}}</td>
+                    <td>{{$row->table_number}}</td>
+                    <td>{{$row->paid_amount}} TK.</td>
+                </tr>
+                @endforeach
+
+                <tr>
+                  <td></td>
+                  <td>Total Amount</td>
+                  <td>{{$datewiseTotal}} TK.</td>
+                </tr>
+              
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+@endif
+
 
 
 </div>
