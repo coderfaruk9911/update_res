@@ -17,13 +17,9 @@ class SaleReportController extends Controller
         $datewiseTotal = Order::where('date', $request->date)->sum('paid_amount');
         $date =$request->date;
 
-        // $todaySaleCount = Order::where('date',$today)->count();
-        // $currentWeekSaleCount = Order::where('created_at', '>=', $previousWeek)->count();
-        // $currentMonthCount = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->count();
-        // $currentYearCount = Order::whereYear('created_at', Carbon::now()->year)->count();
-
         $todaySaleSum = Order::where('date',$today)->sum('paid_amount');
-        $currentWeekSaleSum = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('paid_amount');
+        $last7days = \Carbon\Carbon::today()->subDays(7);
+        $currentWeekSaleSum = Order::where('created_at','>=',$last7days)->sum('paid_amount');
         $currentMonthSum = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->sum('paid_amount');
         $currentYearSum = Order::whereYear('created_at', Carbon::now()->year)->sum('paid_amount');
 
@@ -38,10 +34,11 @@ class SaleReportController extends Controller
         return view('admin.pages.sale_report.today_sale',compact('todaySaleData','todaysTotal'));
     }
     public function weeklySales(){
-        $currentWeekSaleData = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->orderBy('created_at','desc')->get()->groupBy(function($item) {
+        $last7days = \Carbon\Carbon::today()->subDays(7);
+        $currentWeekSaleData = Order::where('created_at','>=',$last7days)->orderBy('created_at','desc')->get()->groupBy(function($item) {
             return $item->created_at->format('Y-m-d');
        });
-        $currentWeekTotal = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('paid_amount');
+        $currentWeekTotal = Order::where('created_at','>=',$last7days)->sum('paid_amount');
 
         return view('admin.pages.sale_report.weekly_sale',compact('currentWeekSaleData','currentWeekTotal'));
     }
@@ -70,7 +67,8 @@ class SaleReportController extends Controller
         $today = Carbon::today()->toDateString();
 
         $todaySaleSum = Order::where('date',$today)->sum('paid_amount');
-        $currentWeekSaleSum = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('paid_amount');
+        $last7days = \Carbon\Carbon::today()->subDays(7);
+        $currentWeekSaleSum = Order::where('created_at','>=',$last7days)->sum('paid_amount');
         $currentMonthSum = Order::whereYear('created_at', Carbon::now()->year)->whereMonth('created_at', Carbon::now()->month)->sum('paid_amount');
         $currentYearSum = Order::whereYear('created_at', Carbon::now()->year)->sum('paid_amount');
 

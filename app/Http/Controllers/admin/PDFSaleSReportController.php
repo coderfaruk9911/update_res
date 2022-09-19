@@ -31,12 +31,13 @@ class PDFSaleSReportController extends Controller
 
 
     public function weeklySalePdf()
-    {   
-        $currentWeekSaleData = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->orderBy('created_at','desc')->get()->groupBy(function($item) {
+    {     
+        $last7days = \Carbon\Carbon::today()->subDays(7);
+        $currentWeekSaleData = Order::where('created_at','>=',$last7days)->orderBy('created_at','desc')->get()->groupBy(function($item) {
             return $item->created_at->format('Y-m-d');
        });
-
-        $currentWeekTotal = Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('paid_amount');Order::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->sum('paid_amount');
+     
+       $currentWeekTotal = Order::where('created_at','>=',$last7days)->sum('paid_amount');
 
         $name = 'weekly_sale-'.date('m-d-Y-h-i').'.'.'pdf';
         
