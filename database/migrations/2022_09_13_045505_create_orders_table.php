@@ -21,6 +21,10 @@ class CreateOrdersTable extends Migration
             $table->string('total_amount');
             $table->string('paid_amount');
             $table->string('discount_amount')->nullable();
+            $table->string('paid_status')->nullable();
+            $table->string('delivery_charge')->nullable();
+            $table->string('cus_contact_number')->nullable();
+            $table->string('customer_points')->nullable();
             $table->timestamps();
         });
     }

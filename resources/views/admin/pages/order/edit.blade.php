@@ -1,6 +1,8 @@
 @if ( Auth::user()->role == 'admin' || Auth::user()->role == 'buyer')
 @extends('admin.layouts.master')
-@section('title','Order Invoice')
+@section('title','Edit Order')
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 
 @section('admin-content')
@@ -10,13 +12,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="float-right">Order Invoice</h1>
+            <h1 class="float-right">Edit Order Invoice</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="{{url('/home')}}">Home</a></li>
               <li class="breadcrumb-item"><a href="{{route('order_item.view')}}">All Order Invoice</a></li>
-              <li class="breadcrumb-item active">Order Invoice</li>
+              <li class="breadcrumb-item active">Edit Order Invoice</li>
             </ol>
           </div>
         </div>
@@ -47,8 +49,13 @@
           <div class="col-12">
 
             <div class="card">
+                @foreach($editData as $index => $row)
+                    @if($index == 0)
+                    <form action="{{route('order_item.update',$row->invoice_number)}}" method="post">
+                    @endif
+                @endforeach
                 
-        <form action="{{route('order_item.store')}}" method="post">
+        
             @csrf
                 
                     <div class="card-body">
@@ -56,25 +63,44 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="invoice_number">Invoice Number</label>
-                                <input type="text" readonly id="invoice_number" name="invoice_number" value="{{$invoice_number}}" class="form-control">
+                                @foreach($editData as $index => $row)
+                                    @if($index == 0)
+                                    <input type="text" readonly id="invoice_number" name="invoice_number" value="{{$row->invoice_number}}" class="form-control">
+                                    @endif
+                                @endforeach
                                 </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="date">Invoice Date</label>
-                                <input type="date" id="date" name="date" readonly value="<?php echo date('Y-m-d'); ?>" class="form-control" required>
+                                @foreach($editData as $index => $row)
+                                @if($index == 0)
+                                <input type="date" id="date" name="date" readonly value="{{$row->date}}" class="form-control" required>
+                                @endif
+                                @endforeach
+                               
                                 </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="cus_contact_number">Contact Number</label>
-                                <input type="text" id="cus_contact_number" name="cus_contact_number" class="form-control" placeholder="Enter Moble Number...">
+                                @foreach($editData as $index => $row)
+                                @if($index == 0)
+                                <input type="text" id="cus_contact_number" name="cus_contact_number" value="{{$row->cus_contact_number}}" class="form-control" readonly>
+                                @endif
+                                @endforeach
+                                
                                 </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Table Number:</label>
-                                <input type="text" required  name="table_number" class="form-control" placeholder="Type Table Number...">
+                                @foreach($editData as $index => $row)
+                                @if($index == 0)
+                                <input type="text" required  name="table_number" class="form-control" value="{{$row->table_number}}" readonly>
+                                @endif
+                                @endforeach
+                               
                                 </div>
                         </div>
                     </div>
@@ -82,45 +108,102 @@
                         <div class="row add_item">
                             <div class="col-md-12">
 
-                                <div class="row">
+                                <div class="row" >
+                                    @foreach ($editData as $row)
+                                        
+                                    
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="typeahead_1">Item Name</label>
-                                            <input type="text" id="typeahead_1" onkeyup="return autocompletess(1)" name="item_name[]"   class="form-control typeahead">
+                                            <label>Item Name</label>
+                                            <label type="text" readonly  class="form-control typeahead"> {{$row->item_name}}</label>
                                             </div> 
                                         </div>
 
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label for="price_1">Unit Price</label>
-                                            <input type="text" id="price_1" onkeyup="return price(1)" name="unit_price[]"  class="form-control">
+                                            <label>Unit Price</label>
+                                            <label type="text" readonly   class="form-control">{{$row->unit_price}}</label>
                                         </div>  
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Quantity</label>
-                                            <input type="text" id="qty_1" onkeyup="return qty(1)" name="item_quantity[]"  class="form-control ">
+                                            <label type="text" readonly  class="form-control">{{$row->item_quantity}}</label>
                                         </div>  
                                     </div>
 
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Price</label>
-                                            <input type="text" id="subtotal_1" name="price[]" class="form-control subtotal">
+                                            <label type="text" readonly class="form-control subtotal">{{$row->price}}</label>
                                         </div>  
                                     </div> 
-                                    <div class="col-md-1">
+
+                                    
+
+                                    {{-- <div class="col-md-1">
                                         <div class="form-group">
                                             <div for="inputprice" class="text-center mt-2">Add More</div>
                                             <a href="" class="btn btn-primary form-control addrow"><i class="fa fa-plus"></i></a>
                                         </div>
-                                    </div> 
+                                    </div>  --}}
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <div for="inputprice" class="text-center mt-2">Delele</div>
+                                            <a  data-id="{{ $row->id }}" class="btn btn-danger form-control deleteRecord"><i class="fa fa-minus"></i></a>
+                                        </div>
+                                    </div>
+                                    @endforeach
+
+
                                 </div>
 
-                                <div id="showItem"></div>
-                                <div class="col-md-12">
-                                  <hr>
-                                </div>
+                                <div class="row add_item">
+                                    <div class="col-md-12">
+        
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="typeahead_1">Item Name</label>
+                                                    <input type="text" id="typeahead_1" onkeyup="return autocompletess(1)" name="item_name[]"   class="form-control typeahead">
+                                                    </div> 
+                                                </div>
+        
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="price_1">Unit Price</label>
+                                                    <input type="text" id="price_1" onkeyup="return price(1)" name="unit_price[]"  class="form-control">
+                                                </div>  
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Quantity</label>
+                                                    <input type="text" id="qty_1" onkeyup="return qty(1)" name="item_quantity[]"  class="form-control ">
+                                                </div>  
+                                            </div>
+        
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label>Price</label>
+                                                    <input type="text" id="subtotal_1" name="price[]" class="form-control subtotal">
+                                                </div>  
+                                            </div> 
+                                            <div class="col-md-1">
+                                                <div class="form-group">
+                                                    <div for="inputprice" class="text-center mt-2">Add More</div>
+                                                    <a href="" class="btn btn-primary form-control addrow"><i class="fa fa-plus"></i></a>
+                                                </div>
+                                            </div> 
+                                        </div>
+        
+                                        <div id="showItem"></div>
+                                        
+                                    </div>
+                                    
+                                </div>  
+
+
+                                
                             </div>
                             
                         </div>  
@@ -130,7 +213,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="totalamounval">Total Amount</label>
-                                    <input type="text" readonly id="totalamounval" name="total_amount" class="form-control">
+                                    <input type="text" readonly id="totalamounval" name="total_amount" value="{{$total}}"  class="form-control">
                                     </div>
                             </div>
                             <div class="col-md-2"> </div>
@@ -155,7 +238,7 @@
                             <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="paid_amount">Grand Total</label>
-                                        <input type="text" readonly name="paid_amount" id="paid_amount" class="form-control">
+                                        <input type="text" readonly name="paid_amount" id="paid_amount" value="{{$total}}" class="form-control">
                                     </div>
                             </div>
 
@@ -165,7 +248,8 @@
                         
                     </div>
                 <div class="modal-footer text-center">
-                <button type="submit" id="redirectOrderList" data-target="https://stackoverflow.com/"  class="btn btn-primary">Order</button>
+                <button type="submit" id="redirectOrderList"  class="btn btn-primary">Order Update</button>
+                <a id="receptOrder"  class="btn btn-primary">Recept</a>
                 </div>
             </form>
             </div>
@@ -187,6 +271,56 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+
+  {{-- recept order --}}
+  <script type="text/javascript">
+
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $("#receptOrder").click(function(e){
+
+        e.preventDefault();
+
+        
+        var invoice_number = $("input[name=invoice_number]").val();
+        var discount_amount = $("input[name=discount_amount]").val();
+        var delivery_charge = $("input[name=delivery_charge]").val();
+        var url = '{{ url('order_item_receptsss') }}';
+
+        $.ajax({
+           url:url,
+           type:"POST",
+
+           data:{
+            "_token": "{{ csrf_token() }}",
+            invoice_number:invoice_number, 
+            discount_amount:discount_amount, 
+            delivery_charge:delivery_charge,
+                },
+           success:function(response){
+              if(response.success){
+                window.location.href = '{{ route('order_item.view') }}';
+              }else{
+                  alert("Error")
+              }
+           },
+           error:function(error){
+              console.log(error)
+           }
+        });
+	});
+
+</script>
+
+
+
 
   <script type="text/javascript">
 
@@ -240,11 +374,30 @@
 
 
 
+<script>
+    $(".deleteRecord").click(function(e){
+        e.preventDefault;
+    var id = $(this).data("id");
+    
+   
+    $.ajax(
+    {
+        url: '{{url('order_item_delete')}}/'+id,
+        type: 'DELETE',
+        data: {
+            "id": id,
+            _token: '{!! csrf_token() !!}',
+        },
+        success: function (){
+           window.location = window.location
+        }
+    });
+   
+});
+</script>
+
 
   <script>
-
-
-
 
     	/**When keyup qty Field this function Run*/
 	function qty(id)
@@ -277,9 +430,10 @@
 		var total = 0;
 		$('input.subtotal').each(function() {
 				total +=Number($(this).val()); 
+                total +={{$total}};
 		});
 		$('#totalamounval').val(total);
-		$('#paid_amount').val(total);
+		$('#paid_amounts').val(total);
 	}
 
      /** due amount*/
@@ -293,9 +447,8 @@
 
     });
 
-
-    /** Delevery Charge amount*/
-    $(document).ready(function() {
+     /** Delevery Charge amount*/
+     $(document).ready(function() {
     $(function() {
     $("#delivery_charge").on("keydown keyup", subss);
     function subss() {
@@ -304,8 +457,6 @@
     });    
 
     });
-
-
 
 
 	/*Add Row Item*/
@@ -340,10 +491,7 @@
 
 
 <script>
-//     $('#redirectOrderList').submit(function() {
-//         window.location.href = "https://stackoverflow.com/";
 
-// });
 
 
 $('#redirectOrderList').on('submit', function(event) {
@@ -356,47 +504,7 @@ $('#redirectOrderList').on('submit', function(event) {
 </script>
 
 
-    {{-- <script type="text/javascript">
 
-$(document).ready(function(){
-
-
-    $("#redirectOrderList").on('click', function (e) {
-        e.preventDefault();
-        $.ajax({
-            
-    
-    url:'{{route('order_item.view')}}';
-
-    type: 'GET',
-
-    dataType: "json",
-
-
-  }); --}}
-{{-- //    window.location.href = '{{route('order_item.view')}}';
-   //stop form submission
-//    e.preventDefault();
-// });
-
-
-
-    //         $(document).on("click", "#redirectOrderList", function() {
-    //             if ($('#test2').is(':visible')) {
-    //                 $('#test2').hide();
-    //             } else {
-    //                 $('#test2').show();
-    //             };
-    //         });
-    //     });
-
-
-
-    //     $('#redirectOrderList').submit(function() {
-    // window.location.href = '{{route('order_item.view')}}';
-    // return false;
-// });
-// </script> --}}
 
 
 

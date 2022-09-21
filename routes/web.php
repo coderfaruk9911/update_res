@@ -204,5 +204,8 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     Route::get('/redirect-page', [ExpenseInvoiceController::class, 'redirect'])->name('redirect.page');
 
 
+    Route::delete('order_item_delete/{id}', [OrderController::class,'destroy'])->name('order_item.destroy');
+    Route::post('order_item_receptsss', [OrderController::class,'receptOrder'])->name('order_item.recept');
+
     
 

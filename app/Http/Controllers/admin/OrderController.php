@@ -9,15 +9,17 @@ use App\Models\Menuitem;
 use App\Models\Orderdetail;
 use PDF;
 use DB;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
     public function view(){
-        $OrderList = Order::orderBy('id', 'desc')->get();
-        $lastRow = Order::latest('id')->first();
-        $lastInsertId = $lastRow->id;
 
-        return view('admin.pages.order.index',compact('OrderList','lastInsertId'));
+        $OrderList = Order::orderBy('id', 'desc')->where('created_at', '>=', Carbon::today())->get();
+        // $lastRow = Order::latest('id')->first();
+        // $lastInsertId = $lastRow->id;
+
+        return view('admin.pages.order.index',compact('OrderList'));
     }
 
     public function addForm(){
@@ -96,6 +98,9 @@ class OrderController extends Controller
             $data->total_amount = $request->total_amount;
             $data->paid_amount = $request->paid_amount;
             $data->discount_amount = $request->discount_amount;
+            $data->delivery_charge = $request->delivery_charge;
+            $data->paid_status = '0';
+            $data->cus_contact_number = $request->cus_contact_number;
             $result = $data->save();
             
 
@@ -145,46 +150,130 @@ class OrderController extends Controller
     }
 
     public function edit($id){
-        $all_supplier = Supplier::all();
-        $editData = Expensedetails::join('expenses', 'expenses.invoice_number', '=', 'expensedetails.expense_id')
-                ->join('stockproductlists', 'stockproductlists.id', '=', 'expensedetails.product_id')
-                ->select( 'expenses.*' , 'expensedetails.*','stockproductlists.product_name')
-                ->where('expenses.id', '=', $id)
-                ->first();
-                // dd( $editData);
-        return view('admin.pages.expense.edit', compact('editData','all_supplier'));
+        $total = Orderdetail::where('invoice_id',$id)->sum('price');
+
+         $editData = Orderdetail::join('orders', 'orders.invoice_number', '=', 'orderdetails.invoice_id')
+                ->join('menuitems', 'menuitems.id', '=', 'orderdetails.item_id')
+                ->select( 'orders.*' , 'orderdetails.*','menuitems.item_name')
+                ->where('orders.invoice_number', '=', $id)
+                ->get();
+
+        return view('admin.pages.order.edit',compact('editData','total'));
     }
 
 
 
 
     public function update(Request $request, $id){
-        $validated = $request->validate([
-            'invoice_date' => 'required',
-            'product_name' => 'required|max:191',
-            'total_amount' => 'required|numeric|digits_between:1,10',
-            'paid_amount' => 'required|numeric|digits_between:1,10',
-            'due_amount' => 'required|numeric|digits_between:1,10',
-        ]);
+           $s=0;
+            foreach ($request->item_name as $key=>$item_name) { 
+                
+                $getproductid = Menuitem::where('item_name',$request->item_name[$key])->first(); 
+                if(empty($getproductid)){
+                    
+                    Orderdetail::where('invoice_id',$request->invoice_number)->delete();
 
-        $data = Expense::findOrFail($id);
+                    $notification = array(
+                        'messege' => 'Item Not Available',
+                        'alert-type' => 'error'
+                    );
+                    return redirect()->route('order_item.view')->with($notification);
+                }
+                else{
+                $productId = $getproductid->id;
+                $getitem = Orderdetail::where('invoice_id',$request->invoice_number)
+                                ->where('item_id',$productId)->first();
 
-        $data->invoice_date = $request->invoice_date;
-        $data->product_name = $request->product_name;
+                   if(empty($getitem)) {
+                    $orderDetail = new Orderdetail();
+                    $orderDetail->item_id = $productId;
+                    $orderDetail->invoice_id = $request->invoice_number;
+                    $orderDetail->item_quantity = $request->item_quantity[$key];
+                    $orderDetail->unit_price = $request->unit_price[$key];
+                    $orderDetail->price = $request->price[$key];
+                    $Submit = $orderDetail->save();
+                   }
+                   else{
+                    
+                    $orderDetail = Orderdetail::where('invoice_id',$request->invoice_number)->where('item_id', $productId)->first();
+                  
+                    // dd($request->item_quantity[$key]);
+                    //$orderDetail->item_id = $productId;
+                    //$orderDetail->invoice_id = $request->invoice_number;
+                    $orderDetail->item_quantity = ($orderDetail->item_quantity + $request->item_quantity[$key]);
+                    //$orderDetail->unit_price = $request->unit_price[$key];
+                    $orderDetail->price = ($orderDetail->price + $request->price[$key]);
+                    $Submit = $orderDetail->save();
+                    
+                   }
+
+                }   
+            
+
+        }
+
+        $data = Order::find($id);
+
+        // $data->invoice_number = $request->invoice_number;
+        // $data->date = $request->date;
+        // $data->table_number = $request->table_number;
         $data->total_amount = $request->total_amount;
         $data->paid_amount = $request->paid_amount;
-        $data->due_amount = $request->due_amount;
+        // $data->discount_amount = $request->discount_amount;
+        // $data->delivery_charge = $request->delivery_charge;
+        // $data->cus_contact_number = $request->cus_contact_number;
         $result = $data->save();
+        
 
-        if ($result) {
-            $notification = array(
-                'messege' => 'Invoice Update Successfully',
-                'alert-type' => 'success'
-            );
-            return redirect()->route('expense_invoice.view')->with($notification);
-        }
+        if($result){
+        $notification = array(
+            'messege' => 'Order update Successfully',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+
+        
+
         
     }
+        
+    }
+
+    public function receptOrder(Request $request)
+    {
+        $receptOrder = Order::where('invoice_number',$request->invoice_number)->first();
+        // dd($request->invoice_number);
+        $receptOrder->paid_status='1';
+        $receptOrder->discount_amount = $request->discount_amount;
+        $receptOrder->delivery_charge = $request->delivery_charge;
+        $result = $receptOrder->save();
+        
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Data Updated successfully'
+                ]
+            );
+
+
+       
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function delete($id){
 
@@ -213,5 +302,14 @@ class OrderController extends Controller
             );
         }
        
+    }
+
+
+    // ajax delete item
+    public function destroy($id){
+        $result = Orderdetail::find($id)->delete($id);
+        return response()->json([
+            'success' => 'Record deleted successfully!'
+        ]);
     }
 }

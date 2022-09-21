@@ -16,5 +16,9 @@ class Order extends Model
         'total_amount',
         'paid_amount',
         'discount_amount',
+        'paid_status',
+        'delivery_charge',
+        'cus_contact_number',
+        'customer_points',
     ];
 }
