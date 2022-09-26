@@ -72,8 +72,8 @@
                         <td>{{$row->contact_number}}</td>
                         <td>
                           <a href="{{route('supplier.delete',$row->id)}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
-                          <a href="{{route('supplier.edit',$row->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i>
-                          </a>
+                          <a href="{{route('supplier.edit',$row->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                          <a href="{{route('supplier.details',$row->id)}}" title="Supplier Details" class="btn btn-primary btn-sm"><i class="fas fa-eye"></i></a>
                         </td>
                     </tr>
                     @endforeach

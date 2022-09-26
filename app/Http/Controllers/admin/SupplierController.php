@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -79,4 +80,11 @@ class SupplierController extends Controller
         }
        
     }
+
+
+    public function details($id){
+        $detailstData = Expense::join('suppliers','suppliers.id','expenses.supplier_id')->where('suppliers.id',$id)->get();
+        return view('admin.pages.supplier.details', compact('detailstData'));
+    }
+
 }

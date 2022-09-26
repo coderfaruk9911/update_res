@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     ExpenseInvoiceController,StockProductListController,ProductExpenseController,
     ProductLimitController,MenuItemController,OrderController,OrderDetailsController,
-    PDFController,Administrativecost,SaleReportController,PDFSaleSReportController,TableListController};
+    PDFController,Administrativecost,SaleReportController,PDFSaleSReportController, ReportController, TableListController};
 
 
 
@@ -63,6 +63,7 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     Route::get('/edit/{id}', [SupplierController::class, 'edit'])->name('supplier.edit');
     Route::post('/update/{id}', [SupplierController::class, 'update'])->name('supplier.update');
     Route::get('/delete/{id}', [SupplierController::class, 'delete'])->name('supplier.delete');
+    Route::get('/details/{id}', [SupplierController::class, 'details'])->name('supplier.details');
     });
 
     /************************************************************
@@ -197,6 +198,14 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     Route::get('/edit/{id}', [TableListController::class, 'edit'])->name('table_list.edit');
     Route::post('/update/{id}', [TableListController::class, 'update'])->name('table_list.update');
     Route::get('/delete/{id}', [TableListController::class, 'delete'])->name('table_list.delete');
+    });
+
+
+    /************************************************************
+     ***          Reports Route Are Here                      ***
+     ************************************************************/
+    Route::prefix('report')->middleware('auth')->group(function () {
+    Route::get('/all-supplier', [ReportController::class, 'allSupplierReport'])->name('allsupplier.report');
     });
 
 

@@ -273,6 +273,43 @@
           @endif
           <!-- End Seller Section -->
 
+
+
+          <!-- Report Section -->
+          @if ( Auth::user()->role == 'admin' || Auth::user()->role == 'buyer')
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-gift"></i>
+              <p>
+                Reports
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+                <a href="{{route('allsupplier.report')}}" class="nav-link">
+                  <i class="fa fa-eye nav-icon"></i>
+                  <p>All Supplier Report</p>
+
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="fa fa-eye nav-icon"></i>
+                  <p>demo menu</p>
+
+                </a>
+              </li>
+
+            </ul>
+          </li>
+          @endif
+
+
+
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
