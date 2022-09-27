@@ -36,7 +36,7 @@
                         <div class="col-md-5">
                             <div class="input-group">
                                 <label for="" class="label label-default mt-2">Form Date: </label>
-                                <input type="date" name="form" class="form-control" required>
+                                <input type="date" name="form_date" class="form-control" required>
                                 <div class="input-group-append">
                                   
                                 </div>
@@ -45,7 +45,7 @@
                         <div class="col-md-5">
                             <div class="input-group">
                                 <label for="" class="label label-default mt-2">To Date: </label>
-                                <input type="date" name="to" class="form-control" required >
+                                <input type="date" name="to_date" class="form-control" required >
 
                             </div>
                         </div>
@@ -64,6 +64,68 @@
         </div>
     </div>
 </section>
+
+
+
+
+@if (count($result)>0)
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+
+        <div class="card">
+          <div class="card-header">
+           
+            {{-- <a href="" class="btn btn-success float-right" target="_blank"> Download PDF</a> --}}
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+            <table id="" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>Invoice Date</th>
+                <th>Total Amount</th>
+                <th>Paid Amount</th>
+                <th>Due Amount</th>
+              </tr>
+              </thead>
+              <tbody>
+
+                @foreach ($result as $key => $row)
+                <tr>
+                    <td>{{$row->invoice_date}}</td>
+                    <td>{{$row->total}}</td>
+                    <td>{{$row->paid}} TK.</td>
+                    <td>{{$row->due}} TK.</td>
+                </tr>
+                @endforeach
+{{-- 
+                <tr>
+                  <td></td>
+                  <td>Total Amount</td>
+                  <td>00 TK.</td>
+                </tr> --}}
+              
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+@endif
+
+
+
 
 
 

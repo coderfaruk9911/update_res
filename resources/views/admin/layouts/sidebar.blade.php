@@ -220,6 +220,35 @@
           </li>
 
 
+          
+           <!-- Due Payment Section -->
+           @if ( Auth::user()->role == 'admin' || Auth::user()->role == 'seller')
+           <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-gift"></i>
+              <p>
+                Due Payment
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="fa fa-plus-circle nav-icon"></i>
+                  <p>Due Payment List</p>
+                </a>
+              </li>
+         
+            </ul>
+          </li>
+          @endif
+          <!-- End Due Payment Section -->
+
+
+
+
+
           {{-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-plus-square"></i>
