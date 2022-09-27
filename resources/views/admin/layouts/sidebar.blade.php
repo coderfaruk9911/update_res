@@ -290,15 +290,15 @@
               <li class="nav-item">
                 <a href="{{route('allsupplier.report')}}" class="nav-link">
                   <i class="fa fa-eye nav-icon"></i>
-                  <p>All Supplier Report</p>
+                  <p>Supplier Report</p>
 
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{route('dateWiseaSupplier.report')}}" class="nav-link">
                   <i class="fa fa-eye nav-icon"></i>
-                  <p>demo menu</p>
+                  <p>DateWise Supp Report</p>
 
                 </a>
               </li>

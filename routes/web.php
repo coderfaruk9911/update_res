@@ -206,6 +206,8 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
      ************************************************************/
     Route::prefix('report')->middleware('auth')->group(function () {
     Route::get('/all-supplier', [ReportController::class, 'allSupplierReport'])->name('allsupplier.report');
+    Route::get('/date-wise-supplier', [ReportController::class, 'dateWiseSupplierReport'])->name('dateWiseaSupplier.report');
+    Route::post('/date-wise-supplier-report', [ReportController::class, 'dateWiseSupplierReportPost'])->name('dateWiseaSupplierPost.report');
     });
 
 
