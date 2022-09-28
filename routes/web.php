@@ -66,6 +66,20 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     Route::get('/details/{id}', [SupplierController::class, 'details'])->name('supplier.details');
     });
 
+    
+    /************************************************************
+     ***          Suppliers Payment Route Are Here            ***
+     ************************************************************/
+    Route::prefix('supplier-payment')->middleware('auth')->group(function () {
+    Route::get('/view', [SupplierPaymentController::class, 'view'])->name('supplier_payment.view');
+    Route::post('/store', [SupplierPaymentController::class, 'store'])->name('supplier_payment.store');
+    Route::get('/edit/{id}', [SupplierPaymentController::class, 'edit'])->name('supplier_payment.edit');
+    Route::post('/update/{id}', [SupplierPaymentController::class, 'update'])->name('supplier_payment.update');
+    Route::get('/delete/{id}', [SupplierPaymentController::class, 'delete'])->name('supplier_payment.delete');
+    });
+
+
+
     /************************************************************
      ***          Expense Invoice Route Are Here              ***
      ************************************************************/

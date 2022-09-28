@@ -8,6 +8,8 @@ use App\Models\Expense;
 use App\Models\Supplier;
 use App\Models\Stockproductlist;
 use App\Models\Expensedetails;
+use App\Models\Supplierduedetail;
+use Carbon\Carbon;
 
 class ExpenseInvoiceController extends Controller
 {
@@ -61,6 +63,8 @@ class ExpenseInvoiceController extends Controller
             'price' => 'required',
         ]);
 
+        
+
         $data = new Expense();
 
         $data->invoice_number = $request->invoice_number;
@@ -70,6 +74,28 @@ class ExpenseInvoiceController extends Controller
         $data->paid_amount = $request->paid_amount;
         $data->due_amount = $request->due_amount;
         $result = $data->save();
+
+        $supDue = Supplierduedetail::where('supplier_id',$request->supplier_id)
+        ->where('date',$request->invoice_date)->first();
+        if($supDue){
+            $supDue->due_amount =  $supDue->due_amount + $request->due_amount;
+            $supDue->total_amount = $supDue->total_amount + $request->total_amount;
+            $supDue->paid_amount = $supDue->paid_amount + $request->paid_amount;
+            $result = $supDue->save();
+        }else{
+
+        $Due = new Supplierduedetail();
+
+        $Due->date = $request->invoice_date;
+        $Due->supplier_id = $request->supplier_id;
+        $Due->due_amount = $request->due_amount;
+        $Due->total_amount = $request->total_amount;
+        $Due->paid_amount = $request->paid_amount;
+        $result = $Due->save();
+
+        }
+
+        
 
 
         if ($result) {

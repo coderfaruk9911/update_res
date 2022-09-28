@@ -234,9 +234,9 @@
             <ul class="nav nav-treeview">
 
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{route('supplier_payment.view')}}" class="nav-link">
                   <i class="fa fa-plus-circle nav-icon"></i>
-                  <p>Due Payment List</p>
+                  <p> Payment </p>
                 </a>
               </li>
          
