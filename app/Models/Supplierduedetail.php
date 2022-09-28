@@ -15,5 +15,6 @@ class Supplierduedetail extends Model
         'due_amount',
         'total_amount',
         'paid_amount',
+        'advanced_amount',
     ];
 }

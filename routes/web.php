@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\{UserManagementController,SupplierController,
     ExpenseInvoiceController,StockProductListController,ProductExpenseController,
     ProductLimitController,MenuItemController,OrderController,OrderDetailsController,
-    PDFController,Administrativecost,SaleReportController,PDFSaleSReportController, ReportController, TableListController};
+    PDFController,Administrativecost,SaleReportController,PDFSaleSReportController, ReportController, SupplierPaymentController, TableListController};
 
 
 
@@ -72,10 +72,8 @@ use App\Http\Controllers\admin\{UserManagementController,SupplierController,
      ************************************************************/
     Route::prefix('supplier-payment')->middleware('auth')->group(function () {
     Route::get('/view', [SupplierPaymentController::class, 'view'])->name('supplier_payment.view');
-    Route::post('/store', [SupplierPaymentController::class, 'store'])->name('supplier_payment.store');
-    Route::get('/edit/{id}', [SupplierPaymentController::class, 'edit'])->name('supplier_payment.edit');
-    Route::post('/update/{id}', [SupplierPaymentController::class, 'update'])->name('supplier_payment.update');
-    Route::get('/delete/{id}', [SupplierPaymentController::class, 'delete'])->name('supplier_payment.delete');
+    Route::get('/payment-form/{id}', [SupplierPaymentController::class, 'paymentForm'])->name('supplier_payment.form');
+    Route::post('/payment-confirm{id}', [SupplierPaymentController::class, 'paymentConfirm'])->name('payment.confirm');
     });
 
 

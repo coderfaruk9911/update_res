@@ -20,6 +20,7 @@ class CreateSupplierduedetailsTable extends Migration
             $table->string('due_amount');
             $table->string('total_amount');
             $table->string('paid_amount');
+            $table->string('advanced_amount');
             $table->timestamps();
         });
     }

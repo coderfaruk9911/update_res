@@ -91,7 +91,7 @@ class ExpenseInvoiceController extends Controller
         $Due->due_amount = $request->due_amount;
         $Due->total_amount = $request->total_amount;
         $Due->paid_amount = $request->paid_amount;
-        $result = $Due->save();
+        $Due->save();
 
         }
 
