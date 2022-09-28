@@ -48,29 +48,31 @@ class SupplierPaymentController extends Controller
 
 
             if ($result) {
-                $paid_amount = $request->paid_amount;
+                
                 $DueUser = Supplierduedetail::where('supplier_id',$id)->where('due_amount', '>',0)->get();
                 // dd($DueUser);
                 
+                $paid_amount = $request->paid_amount;
                 
                 foreach($DueUser as $row){
                    
+                   
                     if($paid_amount > 0){
                     if($row->due_amount > $paid_amount){
-                        $paymentUser = Supplierduedetail::where('supplier_id',$id)->first();
+                        $paymentUser = Supplierduedetail::where('supplier_id',$id)->where('due_amount', '>',0)->first();
                        $paymentUser->due_amount = $row->due_amount - $paid_amount;
                         $paid_amount = 0;
                         $paymentUser->save();
                     }
                     else if($row->due_amount == $paid_amount){
-                        $paymentUser = Supplierduedetail::where('supplier_id',$id)->first();
+                        $paymentUser = Supplierduedetail::where('supplier_id',$id)->where('due_amount', '>',0)->first();
                         $paymentUser->due_amount = $row->due_amount - $paid_amount;
                         $paid_amount = 0;
                         $paymentUser->save();
                     }
                     else if($row->due_amount < $paid_amount){
-                        $paymentUser = Supplierduedetail::where('supplier_id',$id)->first();
-                        $paymentUser->due_amount = 0;
+                        $paymentUser = Supplierduedetail::where('supplier_id',$id)->where('due_amount', '>',0)->first();
+                        $paymentUser->due_amount = '0';
                         $paymentUser->save();
                         $update_paid_amount = $paid_amount - $row->due_amount;
                         $paid_amount = $update_paid_amount;
@@ -78,19 +80,18 @@ class SupplierPaymentController extends Controller
                     }
                     
                 }
-                $paymentAdvanced = Supplierduedetail::where('supplier_id',$id)->first();
-                $paymentAdvanced->advanced_amount== $paid_amount;
+                $paymentAdvanced = Supplierduedetail::where('supplier_id',$id)->orderBy('id', 'DESC')->first();
+                $paymentAdvanced->advanced_amount = $paymentAdvanced->advanced_amount+$paid_amount;
                 $paymentAdvanced->save();
+                
                 }
-
-                 
-
+                
 
                 $notification = array(
                     'messege' => 'Supplier Payment Successfully',
                     'alert-type' => 'success'
                 );
-                return redirect()->route('supplier_payment.view')->with($notification);
+                return redirect()->route('supplier_payment.view');
             }
 
   

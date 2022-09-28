@@ -85,20 +85,8 @@
                                     <input type="number" name="paid_amount"  id="paid_amount"  class="form-control">
                                   </div>
                             </div>
-                            
-
                         </div>
-                        <button type="submit" class="btn btn-primary float-right">Payment</button>
-                       
-
-                      
-
-                       
-        
-                        
-                        
-                       
-                        
+                        <button type="submit" class="btn btn-primary float-right">Payment</button>   
                       </div>
                 </form>
             </div>
