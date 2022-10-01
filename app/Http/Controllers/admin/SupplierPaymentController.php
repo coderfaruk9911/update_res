@@ -81,7 +81,7 @@ class SupplierPaymentController extends Controller
                     
                 }
                 $paymentAdvanced = Supplierduedetail::where('supplier_id',$id)->orderBy('id', 'DESC')->first();
-                $paymentAdvanced->advanced_amount = $paymentAdvanced->advanced_amount+$paid_amount;
+                $paymentAdvanced->advanced_amount = $paymentAdvanced->advanced_amount + $paid_amount;
                 $paymentAdvanced->save();
                 
                 }
